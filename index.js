@@ -16,35 +16,59 @@ client.on('qr', qr => {
     qrcode.generate(qr, {small: true});
 });
 
-//Si la conexión es exitosa muestra el mensaje de conexión exitosa
-client.on('ready', () => {
-    console.log('Conexion exitosa nenes');
-     // Lista de números a los que quieres enviar el mensaje
-     const numbers = [
-        '51974187662@c.us', 
-        // Añade más números aquí
-    ];
 
-    // ESTO ES UN COMENTARIO
+const express = require('express');
+const app = express();
+const port = 3000;
 
-    // Ruta del archivo que quieres enviar
-    const filePath = 'file.pdf'; // Cambia esto por la ruta de tu archivo
-    const fileMimeType = mime.lookup(filePath);
+// Define una ruta única
+app.get('/send_mensaje', (req, res) => {
+  
+    
 
-    // Lee el archivo y crea un objeto MessageMedia
-    const fileData = fs.readFileSync(filePath);
-    const base64File = fileData.toString('base64');
-    const media = new MessageMedia(fileMimeType, base64File, 'file.pdf'); // Cambia 'file.pdf' por el nombre del archivo
-
-    // Enviar el archivo a cada número
-    numbers.forEach(number => {
-        client.sendMessage(number, 'mensaje enviando exitosamente').then(response => {
-            console.log(`Archivo enviado a ${number}`);
-        }).catch(err => {
-            console.error(`No se pudo enviar el archivo a ${number}: `, err);
-        });
-    });
+    res.json({
+        message: req.query.message,
+        success: true,
+        error: false
+      });
 });
+
+// Inicia el servidor
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
+
+//Si la conexión es exitosa muestra el mensaje de conexión exitosa
+
+
+// client.on('ready', () => {
+//     console.log('Conexion exitosa nenes');
+//      // Lista de números a los que quieres enviar el mensaje
+//      const numbers = [
+//         '51974187662@c.us', 
+//         // Añade más números aquí
+//     ];
+
+//     // ESTO ES UN COMENTARIO
+
+//     // Ruta del archivo que quieres enviar
+//     const filePath = 'file.pdf'; // Cambia esto por la ruta de tu archivo
+//     const fileMimeType = mime.lookup(filePath);
+
+//     // Lee el archivo y crea un objeto MessageMedia
+//     const fileData = fs.readFileSync(filePath);
+//     const base64File = fileData.toString('base64');
+//     const media = new MessageMedia(fileMimeType, base64File, 'file.pdf'); // Cambia 'file.pdf' por el nombre del archivo
+
+//     // Enviar el archivo a cada número
+//     numbers.forEach(number => {
+//         client.sendMessage(number, 'mensaje enviando exitosamente').then(response => {
+//             console.log(`Archivo enviado a ${number}`);
+//         }).catch(err => {
+//             console.error(`No se pudo enviar el archivo a ${number}: `, err);
+//         });
+//     });
+// });
 
 
 //Aquí sucede la magia, escucha los mensajes y aquí es donde se manipula lo que queremos que haga el bot
